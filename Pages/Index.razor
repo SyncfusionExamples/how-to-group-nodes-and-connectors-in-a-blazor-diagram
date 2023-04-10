@@ -1,0 +1,128 @@
+﻿@page "/"
+@using Syncfusion.Blazor.Buttons
+
+<SfButton Content="Create Group" OnClick="@CreateGroup"></SfButton>
+<SfButton Content="Update Position" OnClick="@UpdatePosition"></SfButton>
+<SfDiagramComponent  Height="500px" Width="1200px" Nodes="@NodesCollection" Connectors="@ConnectorCollection">
+</SfDiagramComponent>
+
+@code {
+
+    DiagramObjectCollection<Node> NodesCollection = new DiagramObjectCollection<Node>();
+    DiagramObjectCollection<Connector> ConnectorCollection = new DiagramObjectCollection<Connector>();
+    NodeGroup Group1;
+
+    private  void CreateGroup()
+    {
+        NodesCollection.Add(Group1);
+    }
+    private void UpdatePosition()
+    {
+        Group1.OffsetX = 500;
+        Group1.OffsetY = 200;
+    }
+    protected override void OnInitialized()
+    {
+        Node node1 = createNode("node1", 100, 100, "Node1");
+        Node node2 = createNode("node2", 300, 100, "Node2");
+        Node node3 = createNode("node3", 200, 250, "Node3");
+        Node node4 = createNode("node4", 400, 350, "Node4");
+
+        NodesCollection.Add(node1);
+        NodesCollection.Add(node2);
+        NodesCollection.Add(node3);
+        NodesCollection.Add(node4);
+
+        Connector Connector1 = CreateConnector("Connector1", ConnectorSegmentType.Orthogonal, DecoratorShape.Arrow, "node1", "node2");
+        Connector Connector2 = CreateConnector("Connector2", ConnectorSegmentType.Bezier, DecoratorShape.Arrow, "node2", "node3");
+        Connector Connector3 = CreateConnector("Connector3", ConnectorSegmentType.Bezier, DecoratorShape.Arrow, "node3", "node1");
+
+        ConnectorCollection.Add(Connector1);
+        ConnectorCollection.Add(Connector2);
+        ConnectorCollection.Add(Connector3);
+
+
+        ShapeAnnotation annotation = new ShapeAnnotation
+            {
+                Content = "Group Annotation"
+            };
+
+        Group1 = new NodeGroup()
+            {
+                ID = "Group1",
+                Children = new string[] { "node1", "node2", "node3", "Connector1", "Connector2", "Connector3"},
+                Annotations = new DiagramObjectCollection<ShapeAnnotation>()
+                {
+                    annotation
+                },
+                Style = new ShapeStyle() { Fill = "#40E0D0" }
+            };
+
+        NodeGroup Group2 = new NodeGroup()
+            {
+                ID = "Group2",
+                Children = new string[] { "Group1", "node4" },
+                Annotations = new DiagramObjectCollection<ShapeAnnotation>()
+                {
+                    new ShapeAnnotation
+                    {
+                        Content = "Nested Group"
+                    }
+                },
+                Style = new ShapeStyle()
+                {
+                    Fill = "#7FFFD4"
+                }
+
+            }; 
+        NodesCollection.Add(Group1);
+        NodesCollection.Add(Group2);
+    }
+
+    public Node createNode(string id, double offsetX, double offsetY, string content)
+    {
+        Node node = new Node()
+            {
+                ID = id,
+                OffsetX = offsetX,
+                OffsetY = offsetY,
+                Height = 100,
+                Width = 100,
+                Style = new ShapeStyle() { Fill = "#6495ED" }
+            };
+        ShapeAnnotation annotation = new ShapeAnnotation
+            {
+                ID = "annotation1",
+                Content = content,
+                Style = new TextStyle()
+                {
+                    Color = "white",
+                    Fill = "transparent",
+                    StrokeColor = "None"
+                },
+            };
+        node.Annotations = new DiagramObjectCollection<ShapeAnnotation>()
+        {
+             annotation
+        };
+        return node;
+    }
+    public Connector CreateConnector(string id, ConnectorSegmentType type, DecoratorShape shape, string sourceID, string targetID)
+    {
+        Connector connector = new Connector
+            {
+                ID = id,
+                Type = type,
+                TargetDecorator = new DecoratorSettings()
+                {
+                    Shape = shape
+                },
+                SourceID = sourceID,
+                TargetID = targetID
+
+            };
+        return connector;
+    }
+
+        
+}
