@@ -1,6 +1,6 @@
 # How to Group Nodes and Connectors in a Blazor Diagram
 
-A quick start Blazor project that shows how to group nodes and connectors in a Blazor Diagram. This project includes a code snippet to create and update group dynamically. It also includes a code snippet to add annotations to the group and create a nested group.
+A quick start Blazor project that shows how to group nodes and connectors in a [Blazor Diagram](https://www.syncfusion.com/blazor-components/blazor-diagram). This project includes a code snippet to create and update group dynamically. It also includes a code snippet to add annotations to the group and create a nested group.
  
 Refer to the following documentation to learn about the Blazor Diagram component: 
 https://blazor.syncfusion.com/documentation/diagram/group
